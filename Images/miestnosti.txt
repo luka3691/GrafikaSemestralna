@@ -1,0 +1,17 @@
+vstupnaHala praca obyvacka jedalen kuchyna spalna balkon podkrovie
+vstupnaHala
+juh praca sever obyvacka
+praca
+sever vtupnaHala
+obyvacka
+sever spalna juh vstupnaHala vychod jedalen
+jedalen
+zapad obyvacka vychod kuchyna
+kuchyna
+zapad jedalen
+spalna
+juh obyvacka sever podkrovie zapad balkon
+podkrovie
+juh splana
+balkon
+vychod spalna
