@@ -28,7 +28,7 @@ namespace GrafikaSemestralna.Hra
                 new Potreba("hlad"),
                 new Potreba("hygiena"),
                 //new PotrebaSocialnyKontakt(),
-                new Potreba("zabava"),
+                //new Potreba("zabava"),
                 new Potreba("wc")
             };
         }
@@ -36,6 +36,10 @@ namespace GrafikaSemestralna.Hra
         public Miestnost GetAktualnaMiestnost()
         {
             return this.aktualnaMiestnost;
+        }
+        public void SetAktualnaMiestnost(Miestnost miestnostik)
+        {
+            aktualnaMiestnost = miestnostik;
         }
 
         public void PouziPredmet(string nazov)

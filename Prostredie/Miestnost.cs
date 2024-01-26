@@ -10,8 +10,8 @@ namespace GrafikaSemestralna.Prostredie
     public class Miestnost
     {
         private readonly string popisMiestnosti;
-        private readonly Dictionary<string, Miestnost> vychody;
-        private readonly Dictionary<string, IPredmet> predmety;
+        private Dictionary<string, Miestnost> vychody;
+        private Dictionary<string, IPredmet> predmety;
 
         public Miestnost(string popis)
         {
@@ -39,5 +39,7 @@ namespace GrafikaSemestralna.Prostredie
         {
             return this.predmety[nazov];
         }
+        public Dictionary<string, Miestnost> Vychody { get { return vychody; } }
+        public Dictionary<string, IPredmet> Predmety { get { return predmety; } }
     }
 }

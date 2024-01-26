@@ -17,7 +17,7 @@ namespace GrafikaSemestralna.Prostredie
             Miestnost vstupnaHala = new Miestnost("vstupnaHala");
             this.startovaciaMiestnost = vstupnaHala;
 
-            Miestnost praca = new Miestnost("praca");
+            //Miestnost praca = new Miestnost("praca");
 
             Miestnost obyvacka = new Miestnost("obyvacka");
 
@@ -27,21 +27,21 @@ namespace GrafikaSemestralna.Prostredie
 
             Miestnost spalna = new Miestnost("spalna");
 
-            Miestnost balkon = new Miestnost("balkon");
+            //Miestnost balkon = new Miestnost("balkon");
 
-            Miestnost podkrovie = new Miestnost("podkrovie");
+            //Miestnost podkrovie = new Miestnost("podkrovie");
 
             Miestnost kupelna = new Miestnost("kupelna");
 
-            vstupnaHala.NastavVychod("juh", praca);
+            //vstupnaHala.NastavVychod("juh", praca);
             vstupnaHala.NastavVychod("sever", obyvacka);
 
-            praca.NastavVychod("sever", vstupnaHala);
+            //praca.NastavVychod("sever", vstupnaHala);
 
             obyvacka.NastavVychod("sever", spalna);
             obyvacka.NastavVychod("juh", vstupnaHala);
             obyvacka.NastavVychod("vychod", jedalen);
-            obyvacka.NastavPredmet(new Predmet("tv"));
+            //obyvacka.NastavPredmet(new Predmet("tv"));
 
             jedalen.NastavVychod("zapad", obyvacka);
             jedalen.NastavVychod("vychod", kuchyna);
@@ -50,18 +50,20 @@ namespace GrafikaSemestralna.Prostredie
             kuchyna.NastavPredmet(new Predmet("chladnicka"));
 
             spalna.NastavVychod("juh", obyvacka);
-            spalna.NastavVychod("sever", podkrovie);
-            spalna.NastavVychod("zapad", balkon);
+            //spalna.NastavVychod("sever", podkrovie);
+            //spalna.NastavVychod("zapad", balkon);
             spalna.NastavPredmet(new Postel());
+            spalna.NastavVychod("zapad", kupelna);
 
 
-            podkrovie.NastavVychod("juh", spalna);
+            //podkrovie.NastavVychod("juh", spalna);
 
-            balkon.NastavVychod("vychod", spalna);
-            balkon.NastavPredmet(new Vzduch());
+            //balkon.NastavVychod("vychod", spalna);
+            //balkon.NastavPredmet(new Vzduch());
 
             kupelna.NastavPredmet(new Predmet("wc"));
             kupelna.NastavPredmet(new Predmet("sprcha"));
+            kupelna.NastavVychod("vychod", spalna);
 
         }
 

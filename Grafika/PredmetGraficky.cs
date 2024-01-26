@@ -8,15 +8,15 @@ namespace GrafikaSemestralna.Grafika
 {
     public class PredmetGraficky
     {
-        private Image predmet { get; set; }
-        public String nazov { get; set; }
-        private int x { get; set; }
-        private int y { get; set; }
-        private int sizeX { get; set; }
-        private int sizeY { get; set; }
+        private Image predmet;
+        private String nazov { get; set; }
+        private int x;
+        private int y;
+        private int sizeX;
+        private int sizeY;
         private bool visible { get; set; }
-        public PictureBox PictureBox { get; }
-        public string ImagePath { get; }
+        private PictureBox pictureBox;
+        private string ImagePath { get; }
 
         private EventHandler clickHandler;
 
@@ -29,13 +29,13 @@ namespace GrafikaSemestralna.Grafika
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             this.nazov = nazov;
-            PictureBox = new PictureBox
+            pictureBox = new PictureBox
             {
                 SizeMode = PictureBoxSizeMode.StretchImage,
                 Size = new Size(sizeX, sizeY), // Set the initial dimensions
                 Location = new Point(x, y),
                 BackColor = Color.Transparent
-        }; // Set the initial position};
+            }; // Set the initial position};
             this.clickHandler = clickHandler;
             ImagePath = cesta;
         }
@@ -48,9 +48,9 @@ namespace GrafikaSemestralna.Grafika
             try
             {
                 // Load the image from the specified path
-                PictureBox.Image = Image.FromFile(ImagePath);
+                pictureBox.Image = Image.FromFile(ImagePath);
                 // Attach the Click event handler
-                PictureBox.Click += clickHandler;
+                pictureBox.Click += clickHandler;
             }
             catch (Exception ex)
             {
@@ -62,8 +62,17 @@ namespace GrafikaSemestralna.Grafika
         public void HideClickableImage()
         {
             // Hide the PictureBox and detach the Click event handler
-            PictureBox.Visible = false;
-            PictureBox.Click -= clickHandler;
+            pictureBox.Visible = false;
+            pictureBox.Click -= clickHandler;
         }
+        public void ShowClickableImage()
+        {
+            // Hide the PictureBox and detach the Click event handler
+            pictureBox.Visible = true;
+            pictureBox.Click += clickHandler;
+        }
+        public String Nazov { get { return nazov; } }
+        private Image Predmet { get { return predmet; } }
+        public PictureBox PictureBox { get { return pictureBox; } }
     }
 }

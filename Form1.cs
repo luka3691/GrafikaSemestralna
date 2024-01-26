@@ -1,6 +1,7 @@
 using GrafikaSemestralna.Grafika;
 using GrafikaSemestralna.Hra;
 using GrafikaSemestralna.Prostredie;
+using GrafikaSemestralna.Prostredie.Predmety;
 
 namespace GrafikaSemestralna
 {
@@ -8,45 +9,58 @@ namespace GrafikaSemestralna
     {
         private Zvieratko zvieratko;
         private Prostredia prostredie;
-        //private Dictionary<string, PredmetGraficky> predmety;
-        private List<PredmetGraficky> grafickePredmety;
+        private Dictionary<string, PredmetGraficky> grafickePredmety;
+        //private List<PredmetGraficky> grafickePredmety;
         public Form1()
         {
             InitializeComponent();
             prostredie = new Prostredia();
-            /*
-            PictureBox pictureSever = new PictureBox();
-            pictureSever.Width = 160;
-            pictureSever.Height = 380;
-            Bitmap image = new Bitmap("C:\\Images\\Creek.jpg");
-            pictureSever.Dock = DockStyle.Fill;
-            pictureSever.Image = (Image)image;
-            Controls.Add(pictureSever);
+            zvieratko = new Zvieratko("luka", prostredie);
 
-            
-            */
-            grafickePredmety = new List<PredmetGraficky>();
+            //grafickePredmety = new List<PredmetGraficky>();
+            grafickePredmety = new Dictionary<string, PredmetGraficky>();
 
             // Add clickable images to the list (replace with the actual paths to your image files)
+            /*
             grafickePredmety.Add(new PredmetGraficky("chladnicka", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\chladnicka.png", 290, 70, 125, 210, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("sprcha", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sprcha.png", 310, 120, 150, 180, ImageClickedHandler));
+            grafickePredmety.Add(new PredmetGraficky("sprcha", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sprcha.png", 310, 60, 150, 180, ImageClickedHandler));
             grafickePredmety.Add(new PredmetGraficky("postel", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\postel.png", 150, 190, 205, 125, ImageClickedHandler));
             grafickePredmety.Add(new PredmetGraficky("wc", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\wc.png", 75, 165, 110, 165, ImageClickedHandler)); grafickePredmety.Add(new PredmetGraficky("wc", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\wc.png", 75, 165, 110, 165, ImageClickedHandler));
 
             grafickePredmety.Add(new PredmetGraficky("sever", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sever.png", 225, 108, 125, 208, ImageClickedHandler));
             grafickePredmety.Add(new PredmetGraficky("juh", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\juh.png", 225, 332, 125, 62, ImageClickedHandler));
             grafickePredmety.Add(new PredmetGraficky("vychod", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\vychod.png", 488, 82, 82, 243, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("zapad", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\zapad.png", 21, 82, 74, 243, ImageClickedHandler));
+            grafickePredmety.Add(new PredmetGraficky("zapad", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\zapad.png", 5, 62, 74, 243, ImageClickedHandler));
+            */
+            grafickePredmety.Add("chladnicka", new PredmetGraficky("chladnicka", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\chladnicka.png", 290, 70, 125, 210, ImageClickedHandler));
+            grafickePredmety.Add("sprcha", new PredmetGraficky("sprcha", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sprcha.png", 310, 60, 150, 180, ImageClickedHandler));
+            grafickePredmety.Add("postel", new PredmetGraficky("postel", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\postel.png", 150, 190, 205, 125, ImageClickedHandler));
+            grafickePredmety.Add("wc", new PredmetGraficky("wc", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\wc.png", 75, 165, 110, 165, ImageClickedHandler)); 
+
+            grafickePredmety.Add("sever", new PredmetGraficky("sever", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sever.png", 225, 108, 125, 208, ImageClickedHandler));
+            grafickePredmety.Add("juh", new PredmetGraficky("juh", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\juh.png", 225, 332, 125, 62, ImageClickedHandler));
+            grafickePredmety.Add("vychod", new PredmetGraficky("vychod", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\vychod.png", 488, 82, 82, 243, ImageClickedHandler));
+            grafickePredmety.Add("zapad", new PredmetGraficky("zapad", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\zapad.png", 5, 62, 74, 243, ImageClickedHandler));
 
             // Load and display images in the PictureBox
             foreach (var clickableImage in grafickePredmety)
             {
-                clickableImage.LoadImage();
-                hraciaPlocha.Controls.Add(clickableImage.PictureBox);
+                clickableImage.Value.LoadImage();
+                hraciaPlocha.Controls.Add(clickableImage.Value.PictureBox);
+                clickableImage.Value.HideClickableImage();
+            }
+            
+            foreach (var predmetiky in zvieratko.GetAktualnaMiestnost().Predmety.Keys)
+            {
+                grafickePredmety[predmetiky].ShowClickableImage();
+            }
+            foreach (var predmetiky in zvieratko.GetAktualnaMiestnost().Vychody.Keys)
+            {
+                grafickePredmety[predmetiky].ShowClickableImage();
             }
 
             // Add the PictureBox to the form
-            Controls.Add(hraciaPlocha);
+            //Controls.Add(hraciaPlocha);
 
 
 
@@ -61,13 +75,36 @@ namespace GrafikaSemestralna
         {
             // Handle the click event here
             PictureBox clickedPictureBox = (PictureBox)sender;
-            PredmetGraficky clickedImage = grafickePredmety.Find(img => img.PictureBox == clickedPictureBox);
-
-            // Example: Show a message box with the clicked image path
-            MessageBox.Show($"Image Clicked: {clickedImage.nazov}");
-
+            //PredmetGraficky clickedImage = grafickePredmety.Find(img => img.PictureBox == clickedPictureBox);
+            PredmetGraficky clickedImage = grafickePredmety.Values.FirstOrDefault(img => img.PictureBox == clickedPictureBox);
+            
+            if (clickedImage.Nazov == "sever" || clickedImage.Nazov == "juh" ||  clickedImage.Nazov == "vychod" || clickedImage.Nazov == "zapad")
+            {
+                zvieratko.SetAktualnaMiestnost(zvieratko.GetAktualnaMiestnost().Vychody[clickedImage.Nazov]);
+                repaintHraciuPlochu();
+            } else
+            {
+                
+            }
+            
             // Hide the clickable image and disable the click handler
             // clickedImage.HideClickableImage();
+        }
+        private void repaintHraciuPlochu()
+        {
+            foreach (var clickableImage in grafickePredmety)
+            {
+                clickableImage.Value.HideClickableImage();
+            }
+
+            foreach (var predmetiky in zvieratko.GetAktualnaMiestnost().Predmety.Keys)
+            {
+                grafickePredmety[predmetiky].ShowClickableImage();
+            }
+            foreach (var predmetiky in zvieratko.GetAktualnaMiestnost().Vychody.Keys)
+            {
+                grafickePredmety[predmetiky].ShowClickableImage();
+            }
         }
 
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
