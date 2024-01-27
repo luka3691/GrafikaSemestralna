@@ -34,18 +34,7 @@ namespace GrafikaSemestralna
             grafickyPotreby.Add("wc", wcBar);
             grafickyPotreby.Add("hygiena", hygienaBar);
             grafickyPotreby.Add("zivot", zivotBar);
-            // Add clickable images to the list (replace with the actual paths to your image files)
-            /*
-            grafickePredmety.Add(new PredmetGraficky("chladnicka", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\chladnicka.png", 290, 70, 125, 210, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("sprcha", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sprcha.png", 310, 60, 150, 180, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("postel", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\postel.png", 150, 190, 205, 125, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("wc", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\wc.png", 75, 165, 110, 165, ImageClickedHandler)); grafickePredmety.Add(new PredmetGraficky("wc", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\wc.png", 75, 165, 110, 165, ImageClickedHandler));
-
-            grafickePredmety.Add(new PredmetGraficky("sever", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sever.png", 225, 108, 125, 208, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("juh", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\juh.png", 225, 332, 125, 62, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("vychod", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\vychod.png", 488, 82, 82, 243, ImageClickedHandler));
-            grafickePredmety.Add(new PredmetGraficky("zapad", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\zapad.png", 5, 62, 74, 243, ImageClickedHandler));
-            */
+            
             grafickePredmety.Add("chladnicka", new PredmetGraficky("chladnicka", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\chladnicka.png", 290, 70, 125, 210, ImageClickedHandler));
             grafickePredmety.Add("sprcha", new PredmetGraficky("sprcha", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\sprcha.png", 310, 60, 150, 180, ImageClickedHandler));
             grafickePredmety.Add("postel", new PredmetGraficky("postel", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\postel.png", 150, 190, 205, 125, ImageClickedHandler));
@@ -56,7 +45,7 @@ namespace GrafikaSemestralna
             grafickePredmety.Add("vychod", new PredmetGraficky("vychod", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\vychod.png", 488, 82, 82, 243, ImageClickedHandler));
             grafickePredmety.Add("zapad", new PredmetGraficky("zapad", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\zapad.png", 5, 62, 74, 243, ImageClickedHandler));
 
-            // Load and display images in the PictureBox
+           
             foreach (var clickableImage in grafickePredmety)
             {
                 clickableImage.Value.LoadImage();
@@ -73,8 +62,6 @@ namespace GrafikaSemestralna
                 grafickePredmety[predmetiky].ShowClickableImage();
             }
 
-            // Add the PictureBox to the form
-            //Controls.Add(hraciaPlocha);
             timerUpdater = new System.Windows.Forms.Timer();
             timerUpdater.Tick += (sender, e) => UpdateProgressBar(grafickyPotreby, zvieratko, this);
             timerUpdater.Interval = 1000;
@@ -85,32 +72,20 @@ namespace GrafikaSemestralna
             startTime = DateTime.Now;
             timer.Start();
 
-            /*
-                        predmety.Add("sprcha", new PredmetGraficky("sprcha", "images/sprcha.png", 290, 70, 125, 210));
-                        predmety.Add("chladnicka", new PredmetGraficky("chladnicka", "images/chladnicka.png", 310, 120, 150, 180));
-                        predmety.Add("postel", new PredmetGraficky("postel", "images/postel.png", 150, 190, 205, 125));
-                        predmety.Add("wc", new PredmetGraficky("wc", "images/wc.png", 75, 165, 110, 165));
-                        */
         }
 
         static void UpdateProgressBar(Dictionary<string, ProgressBar> progressBars, Zvieratko zvieratik, Form1 form)
         {
-            // Ensure UI updates are performed on the main UI thread
             foreach (var progressBarEntry in progressBars)
             {
                 string progressBarKey = progressBarEntry.Key;
 
                 progressBarEntry.Value.Invoke((MethodInvoker)delegate
                 {
-                    // Extract the value from the corresponding textbox and convert it to an integer
-
-
-                    // Update the progress bar value with the extracted value
                     progressBars[progressBarKey].Value = zvieratik.GetPotreba(progressBarKey).GetAktualnePercent();
                     if (progressBars[progressBarKey].Value == 0 && progressBarKey == "zivot")
                     {
                         form.EndGame(false);
-
                     }
 
                 });
@@ -119,9 +94,7 @@ namespace GrafikaSemestralna
 
         private void ImageClickedHandler(object sender, EventArgs e)
         {
-            // Handle the click event here
-            PictureBox clickedPictureBox = (PictureBox)sender;
-            //PredmetGraficky clickedImage = grafickePredmety.Find(img => img.PictureBox == clickedPictureBox);
+           PictureBox clickedPictureBox = (PictureBox)sender;
             PredmetGraficky clickedImage = grafickePredmety.Values.FirstOrDefault(img => img.PictureBox == clickedPictureBox);
 
             if (clickedImage.Nazov == "sever" || clickedImage.Nazov == "juh" || clickedImage.Nazov == "vychod" || clickedImage.Nazov == "zapad")
@@ -134,8 +107,6 @@ namespace GrafikaSemestralna
                 clickedImage.PouziSa(zvieratko);
             }
 
-            // Hide the clickable image and disable the click handler
-            // clickedImage.HideClickableImage();
         }
         private void repaintHraciuPlochu()
         {
@@ -159,14 +130,12 @@ namespace GrafikaSemestralna
         {
             if (hraciaPlocha.InvokeRequired)
             {
-                // Invoke the method on the UI thread
                 hraciaPlocha.Invoke(new Action(() => EndGame(vyhra)));
             }
             else
             {
                 timer.Stop();
                 timerUpdater.Stop();
-                // Access or modify the control directly
                 hraciaPlocha.BackgroundImage = null;
                 hraciaPlocha.Refresh();
                 foreach (var clickableImage in grafickePredmety)
@@ -189,7 +158,7 @@ namespace GrafikaSemestralna
         {
             TimeSpan elapsedTime = DateTime.Now - startTime;
 
-            if (elapsedTime.TotalSeconds >= 60) // 60 seconds (1 minute)
+            if (elapsedTime.TotalSeconds >= 60)
             {
 
                 EndGame(true);

@@ -65,17 +65,18 @@
             // 
             // zivotBar
             // 
-            zivotBar.Location = new Point(104, 413);
+            zivotBar.Location = new Point(143, 409);
             zivotBar.Name = "zivotBar";
-            zivotBar.Size = new Size(351, 29);
+            zivotBar.Size = new Size(383, 45);
             zivotBar.TabIndex = 5;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(40, 422);
+            label3.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(29, 409);
             label3.Name = "label3";
-            label3.Size = new Size(43, 20);
+            label3.Size = new Size(95, 46);
             label3.TabIndex = 6;
             label3.Text = "Život";
             label3.Click += label3_Click;

@@ -37,7 +37,7 @@ namespace GrafikaSemestralna.Grafika
                 Size = new Size(sizeX, sizeY), // Set the initial dimensions
                 Location = new Point(x, y),
                 BackColor = Color.Transparent
-            }; // Set the initial position};
+            };
             this.clickHandler = clickHandler;
             ImagePath = cesta;
         }
@@ -49,14 +49,11 @@ namespace GrafikaSemestralna.Grafika
         {
             try
             {
-                // Load the image from the specified path
                 pictureBox.Image = System.Drawing.Image.FromFile(ImagePath);
-                // Attach the Click event handler
                 pictureBox.Click += clickHandler;
             }
             catch (Exception ex)
             {
-                // Handle exceptions (e.g., file not found, invalid image format, etc.)
                 MessageBox.Show($"Error loading image '{ImagePath}': {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -64,10 +61,8 @@ namespace GrafikaSemestralna.Grafika
 
         public void HideClickableImage()
         {
-            // Hide the PictureBox and detach the Click event handler
             if (pictureBox.InvokeRequired)
             {
-                // Invoke the method on the UI thread
                 pictureBox.Invoke(new Action(HideClickableImage));
             }
             else
@@ -79,7 +74,6 @@ namespace GrafikaSemestralna.Grafika
         }
         public void ShowClickableImage()
         {
-            // Hide the PictureBox and detach the Click event handler
             pictureBox.Visible = true;
             pictureBox.Click += clickHandler;
         }
