@@ -27,7 +27,7 @@ namespace GrafikaSemestralna.Prostredie.Predmety
                     zvieratko.GetPotreba("wc").Zvis(100);
                     break;
                 case "tv":
-                    zvieratko.GetPotreba("zabava").Zvis(50);
+                    //zvieratko.GetPotreba("zabava").Zvis(50);
                     zvieratko.GetPotreba("energia").Zniz(20);
                     break;
                 case "chladnicka":

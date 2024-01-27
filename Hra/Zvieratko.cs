@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GrafikaSemestralna.Hra.Potreby;
+using System.Timers;
 
 namespace GrafikaSemestralna.Hra
 {
@@ -14,7 +15,7 @@ namespace GrafikaSemestralna.Hra
         private readonly string meno;
         private Miestnost aktualnaMiestnost;
         private ZijeZvieratko stavZvieratka;
-        private readonly List<IStavPotreby> potreby;
+        private List<IStavPotreby> potreby;
 
         public Zvieratko(string meno, Prostredia prostredie)
         {
@@ -31,8 +32,26 @@ namespace GrafikaSemestralna.Hra
                 //new Potreba("zabava"),
                 new Potreba("wc")
             };
-        }
+            System.Timers.Timer timer = new System.Timers.Timer(5000); // 5000 milliseconds = 5 seconds
 
+            // Hook up the Elapsed event for the timer
+            timer.Elapsed += OnTimedEvent;
+
+            // Set the timer to auto-reset (repeats) after each interval
+            timer.AutoReset = true;
+
+            // Start the timer
+            timer.Enabled = true;
+
+        }
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            
+            foreach (IStavPotreby potreba in potreby)
+            {
+                potreba.Zniz(5);
+            }
+           }
         public Miestnost GetAktualnaMiestnost()
         {
             return this.aktualnaMiestnost;
@@ -41,6 +60,7 @@ namespace GrafikaSemestralna.Hra
         {
             aktualnaMiestnost = miestnostik;
         }
+
 
         public void PouziPredmet(string nazov)
         {
@@ -59,5 +79,7 @@ namespace GrafikaSemestralna.Hra
             }
             return null;
         }
+       
+        public List<IStavPotreby> Potreby { get { return potreby; } }
     }
 }
