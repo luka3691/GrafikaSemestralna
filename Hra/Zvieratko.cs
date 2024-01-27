@@ -16,13 +16,14 @@ namespace GrafikaSemestralna.Hra
         private Miestnost aktualnaMiestnost;
         private ZijeZvieratko stavZvieratka;
         private List<IStavPotreby> potreby;
+        private Zivot zivot;
 
         public Zvieratko(string meno, Prostredia prostredie)
         {
             this.meno = meno;
             this.aktualnaMiestnost = prostredie.GetStartovaciaMiestnost();
             this.stavZvieratka = ZijeZvieratko.ZIJE;
-
+            this.zivot = new Zivot();
             this.potreby = new List<IStavPotreby>
             {
                 new Potreba("energia"),
@@ -30,7 +31,8 @@ namespace GrafikaSemestralna.Hra
                 new Potreba("hygiena"),
                 //new PotrebaSocialnyKontakt(),
                 //new Potreba("zabava"),
-                new Potreba("wc")
+                new Potreba("wc"),
+                zivot
             };
             System.Timers.Timer timer = new System.Timers.Timer(5000); // 5000 milliseconds = 5 seconds
 
@@ -49,7 +51,16 @@ namespace GrafikaSemestralna.Hra
             
             foreach (IStavPotreby potreba in potreby)
             {
-                potreba.Zniz(5);
+                if (potreba.GetNazov() != "zivot")
+                {
+                    potreba.Zniz(5);
+                    if (potreba.GetAktualnePercent() == 0)
+                    {
+                        zivot.Zniz(7);
+                        
+                    }
+                }
+                
             }
            }
         public Miestnost GetAktualnaMiestnost()

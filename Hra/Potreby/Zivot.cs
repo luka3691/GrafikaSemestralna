@@ -30,6 +30,7 @@ namespace GrafikaSemestralna.Hra.Potreby
             if (GetAktualnePercent() == 0)
             {
                 stav = ZijeZvieratko.MRTVE;
+                
             }
         }
 

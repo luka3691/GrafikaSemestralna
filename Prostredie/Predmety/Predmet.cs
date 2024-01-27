@@ -38,6 +38,12 @@ namespace GrafikaSemestralna.Prostredie.Predmety
                     zvieratko.GetPotreba("hygiena").Zvis(100);
                     zvieratko.GetPotreba("energia").Zniz(5);
                     break;
+                case "postel":
+                    zvieratko.GetPotreba("hygiena").Zniz(20);
+                    zvieratko.GetPotreba("hlad").Zniz(20);
+                    zvieratko.GetPotreba("wc").Zniz(20);
+                    zvieratko.GetPotreba("energia").Zvis(100);
+                    break;
             }
         }
     }

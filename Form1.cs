@@ -1,5 +1,6 @@
 using GrafikaSemestralna.Grafika;
 using GrafikaSemestralna.Hra;
+using GrafikaSemestralna.Hra.Exceptions;
 using GrafikaSemestralna.Hra.Potreby;
 using GrafikaSemestralna.Prostredie;
 using GrafikaSemestralna.Prostredie.Predmety;
@@ -14,7 +15,10 @@ namespace GrafikaSemestralna
         private Prostredia prostredie;
         private Dictionary<string, PredmetGraficky> grafickePredmety;
         private Dictionary<string, ProgressBar> grafickyPotreby;
-        private BackgroundWorker backgroundWorker1;
+
+        System.Windows.Forms.Timer timerUpdater;
+        private System.Timers.Timer timer;
+        private DateTime startTime;
         //private List<PredmetGraficky> grafickePredmety;
         public Form1()
         {
@@ -29,6 +33,7 @@ namespace GrafikaSemestralna
             grafickyPotreby.Add("hlad", hladBar);
             grafickyPotreby.Add("wc", wcBar);
             grafickyPotreby.Add("hygiena", hygienaBar);
+            grafickyPotreby.Add("zivot", zivotBar);
             // Add clickable images to the list (replace with the actual paths to your image files)
             /*
             grafickePredmety.Add(new PredmetGraficky("chladnicka", "C:\\Users\\luka3\\source\\repos\\GrafikaSemestralna\\Images\\chladnicka.png", 290, 70, 125, 210, ImageClickedHandler));
@@ -70,10 +75,16 @@ namespace GrafikaSemestralna
 
             // Add the PictureBox to the form
             //Controls.Add(hraciaPlocha);
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Tick += (sender, e) => UpdateProgressBar(grafickyPotreby, zvieratko);
-            timer.Interval = 2000;
+            timerUpdater = new System.Windows.Forms.Timer();
+            timerUpdater.Tick += (sender, e) => UpdateProgressBar(grafickyPotreby, zvieratko, this);
+            timerUpdater.Interval = 1000;
+
+            timerUpdater.Start();
+            timer = new System.Timers.Timer(1000);
+            timer.Elapsed += Timer_Elapsed;
+            startTime = DateTime.Now;
             timer.Start();
+
             /*
                         predmety.Add("sprcha", new PredmetGraficky("sprcha", "images/sprcha.png", 290, 70, 125, 210));
                         predmety.Add("chladnicka", new PredmetGraficky("chladnicka", "images/chladnicka.png", 310, 120, 150, 180));
@@ -81,22 +92,27 @@ namespace GrafikaSemestralna
                         predmety.Add("wc", new PredmetGraficky("wc", "images/wc.png", 75, 165, 110, 165));
                         */
         }
-        
-        static void UpdateProgressBar(Dictionary<string, ProgressBar> progressBars, Zvieratko zvieratik)
+
+        static void UpdateProgressBar(Dictionary<string, ProgressBar> progressBars, Zvieratko zvieratik, Form1 form)
         {
             // Ensure UI updates are performed on the main UI thread
             foreach (var progressBarEntry in progressBars)
             {
                 string progressBarKey = progressBarEntry.Key;
 
-                progressBarEntry.Value.Invoke((MethodInvoker)delegate {
+                progressBarEntry.Value.Invoke((MethodInvoker)delegate
+                {
                     // Extract the value from the corresponding textbox and convert it to an integer
-                    
-                    
-                        // Update the progress bar value with the extracted value
-                        progressBars[progressBarKey].Value = zvieratik.GetPotreba(progressBarKey).GetAktualnePercent();
 
-                    
+
+                    // Update the progress bar value with the extracted value
+                    progressBars[progressBarKey].Value = zvieratik.GetPotreba(progressBarKey).GetAktualnePercent();
+                    if (progressBars[progressBarKey].Value == 0 && progressBarKey == "zivot")
+                    {
+                        form.EndGame(false);
+
+                    }
+
                 });
             }
         }
@@ -115,7 +131,7 @@ namespace GrafikaSemestralna
             }
             else
             {
-
+                clickedImage.PouziSa(zvieratko);
             }
 
             // Hide the clickable image and disable the click handler
@@ -135,6 +151,63 @@ namespace GrafikaSemestralna
             foreach (var predmetiky in zvieratko.GetAktualnaMiestnost().Vychody.Keys)
             {
                 grafickePredmety[predmetiky].ShowClickableImage();
+            }
+        }
+
+
+        public void EndGame(bool vyhra)
+        {
+            if (hraciaPlocha.InvokeRequired)
+            {
+                // Invoke the method on the UI thread
+                hraciaPlocha.Invoke(new Action(() => EndGame(vyhra)));
+            }
+            else
+            {
+                timer.Stop();
+                timerUpdater.Stop();
+                // Access or modify the control directly
+                hraciaPlocha.BackgroundImage = null;
+                hraciaPlocha.Refresh();
+                foreach (var clickableImage in grafickePredmety)
+                {
+                    clickableImage.Value.HideClickableImage();
+                }
+                if (vyhra)
+                {
+                    vyhraText.Visible = true;
+                }
+                else
+                {
+                    prehraText.Visible = true;
+                }
+            }
+        }
+
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            TimeSpan elapsedTime = DateTime.Now - startTime;
+
+            if (elapsedTime.TotalSeconds >= 60) // 60 seconds (1 minute)
+            {
+
+                EndGame(true);
+            }
+
+            UpdateTimeLabel(elapsedTime);
+        }
+
+        private void UpdateTimeLabel(TimeSpan elapsed)
+        {
+            string formattedTime = $"{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
+            if (timeLabel.InvokeRequired)
+            {
+                timeLabel.Invoke((MethodInvoker)delegate { timeLabel.Text = formattedTime; });
+            }
+            else
+            {
+                timeLabel.Text = formattedTime;
             }
         }
 

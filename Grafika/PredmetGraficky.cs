@@ -1,14 +1,16 @@
-﻿using System;
+﻿using GrafikaSemestralna.Hra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GrafikaSemestralna.Grafika
 {
     public class PredmetGraficky
     {
-        private Image predmet;
+        private System.Drawing.Image predmet;
         private String nazov { get; set; }
         private int x;
         private int y;
@@ -48,7 +50,7 @@ namespace GrafikaSemestralna.Grafika
             try
             {
                 // Load the image from the specified path
-                pictureBox.Image = Image.FromFile(ImagePath);
+                pictureBox.Image = System.Drawing.Image.FromFile(ImagePath);
                 // Attach the Click event handler
                 pictureBox.Click += clickHandler;
             }
@@ -58,12 +60,22 @@ namespace GrafikaSemestralna.Grafika
                 MessageBox.Show($"Error loading image '{ImagePath}': {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
 
         public void HideClickableImage()
         {
             // Hide the PictureBox and detach the Click event handler
-            pictureBox.Visible = false;
-            pictureBox.Click -= clickHandler;
+            if (pictureBox.InvokeRequired)
+            {
+                // Invoke the method on the UI thread
+                pictureBox.Invoke(new Action(HideClickableImage));
+            }
+            else
+            {
+                pictureBox.Visible = false;
+                pictureBox.Click -= clickHandler;
+            }
+            
         }
         public void ShowClickableImage()
         {
@@ -71,8 +83,35 @@ namespace GrafikaSemestralna.Grafika
             pictureBox.Visible = true;
             pictureBox.Click += clickHandler;
         }
+        public void PouziSa(Zvieratko zvieratko)
+        {
+            switch (nazov)
+            {
+                case "wc":
+                    zvieratko.GetPotreba("wc").Zvis(100);
+                    break;
+                case "tv":
+                    //zvieratko.GetPotreba("zabava").Zvis(50);
+                    zvieratko.GetPotreba("energia").Zniz(20);
+                    break;
+                case "chladnicka":
+                    zvieratko.GetPotreba("hlad").Zvis(80);
+                    zvieratko.GetPotreba("energia").Zniz(10);
+                    break;
+                case "sprcha":
+                    zvieratko.GetPotreba("hygiena").Zvis(100);
+                    zvieratko.GetPotreba("energia").Zniz(5);
+                    break;
+                case "postel":
+                    zvieratko.GetPotreba("hygiena").Zniz(20);
+                    zvieratko.GetPotreba("hlad").Zniz(20);
+                    zvieratko.GetPotreba("wc").Zniz(20);
+                    zvieratko.GetPotreba("energia").Zvis(100);
+                    break;
+            }
+        }
         public String Nazov { get { return nazov; } }
-        private Image Predmet { get { return predmet; } }
+        private System.Drawing.Image Predmet { get { return predmet; } }
         public PictureBox PictureBox { get { return pictureBox; } }
     }
 }
